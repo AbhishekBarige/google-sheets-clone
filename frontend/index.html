@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10x10 Spreadsheet with Functions</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 5px;
+            text-align: center;
+            width: 80px;
+        }
+        input {
+            width: 100%;
+            border: none;
+            text-align: center;
+        }
+        .button-bar button {
+            margin-right: 10px;
+        }
+        .formula-bar {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="button-bar">
+        <button onclick="calculate('sum')">SUM</button>
+        <button onclick="calculate('average')">AVERAGE</button>
+        <button onclick="calculate('count')">COUNT</button>
+        <button onclick="calculate('max')">MAX</button>
+        <button onclick="calculate('min')">MIN</button>
+    </div>
+
+    <div class="formula-bar">
+        <label for="formula">Formula Bar: </label>
+        <input type="text" id="formula" placeholder="Enter formula here">
+    </div>
+
+    <table id="spreadsheet">
+        <thead>
+            <tr>
+                <th></th>
+                <script>
+                    document.write(
+                        Array.from({length: 10}, (_, i) => `<th>${String.fromCharCode(65 + i)}</th>`).join('')
+                    );
+                </script>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                for (let row = 1; row <= 10; row++) {
+                    document.write(`<tr><th>${row}</th>`);
+                    for (let col = 0; col < 10; col++) {
+                        let cellId = `${String.fromCharCode(65 + col)}${row}`;
+                        document.write(`<td><input type="text" id="${cellId}"></td>`);
+                    }
+                    document.write('</tr>');
+                }
+            </script>
+        </tbody>
+    </table>
+
+    <script>
+        function calculate(operation) {
+            const selectedCells = prompt("Enter cells to calculate (e.g., A1,A2,A3):");
+            const cells = selectedCells.split(",");
+            const values = cells.map(cell => parseFloat(document.getElementById(cell.trim()).value) || 0);
+            let result;
+
+            switch(operation) {
+                case 'sum':
+                    result = values.reduce((a, b) => a + b, 0);
+                    break;
+                case 'average':
+                    result = values.reduce((a, b) => a + b, 0) / values.length;
+                    break;
+                case 'count':
+                    result = values.length;
+                    break;
+                case 'max':
+                    result = Math.max(...values);
+                    break;
+                case 'min':
+                    result = Math.min(...values);
+                    break;
+            }
+
+            alert(`Result: ${result}`);
+        }
+    </script>
+
+</body>
+</html>
